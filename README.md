@@ -13,12 +13,13 @@ Desktop App PyQt5, WebSocketsА
 синхронность Redis 7 + Celery 
 
 
-1. git clone https://github.com/your-repo/proxy-service.git
+1. https://github.com/Maruxastalker/proxy_service_with_account.git
+2. Получение переменных окружения
 cd proxy-service
 cp env.example backend/.env
-2. Запуск инфраструктуры docker-compose up -d --build
+3. Запуск инфраструктуры docker-compose up -d --build
 
-3. Автоматическая настройка базы данных
+4. Автоматическая настройка базы данных
 При первом запуске docker-compose автоматически применяются миграции Alembic и наполняется база данных.
 
 Система по умолчанию создает набор тестовых виртуальных машин (Proxy Europe, USA, Asia) через скрипт init_db.py, который запускается внутри контейнера бэкенда.
