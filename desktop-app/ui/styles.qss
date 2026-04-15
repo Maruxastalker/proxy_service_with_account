@@ -1,0 +1,165 @@
+QMainWindow {
+    background-color: #1a1a2e;
+}
+
+QWidget {
+    background-color: #1a1a2e;
+    color: #eeeeee;
+    font-family: 'Segoe UI', 'Microsoft YaHei', Arial, sans-serif;
+}
+
+#icon {
+    font-size: 32px;
+    background: transparent;
+}
+
+#title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #0f3460;
+    background: transparent;
+    padding: 5px;
+}
+
+#line {
+    background-color: #16213e;
+    max-height: 2px;
+    margin: 5px 0;
+}
+
+QGroupBox {
+    font-size: 14px;
+    font-weight: bold;
+    color: #e94560;
+    border: 2px solid #16213e;
+    border-radius: 8px;
+    margin-top: 12px;
+    padding-top: 10px;
+    background-color: #16213e;
+}
+
+QGroupBox::title {
+    subcontrol-origin: margin;
+    left: 15px;
+    padding: 0 8px 0 8px;
+    color: #e94560;
+}
+
+#auth_group, #key_group, #status_group {
+    background-color: #16213e;
+}
+
+#field_label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #eeeeee;
+    margin-left: 5px;
+    margin-top: 5px;
+}
+
+QLineEdit {
+    background-color: #0f3460;
+    border: 1px solid #e94560;
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-size: 13px;
+    color: #eeeeee;
+}
+
+QLineEdit:focus {
+    border: 2px solid #e94560;
+    background-color: #1a1a2e;
+}
+
+QLineEdit::placeholder {
+    color: #888888;
+    font-style: italic;
+}
+
+#token_input, #key_input {
+    margin-bottom: 5px;
+}
+
+#connect_btn {
+    background-color: #e94560;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #ffffff;
+    padding: 10px;
+}
+
+#connect_btn:hover {
+    background-color: #c73e56;
+}
+
+#connect_btn:disabled {
+    background-color: #555555;
+    color: #999999;
+}
+
+#disconnect_btn {
+    background-color: #0f3460;
+    border: 2px solid #e94560;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #ffffff;
+    padding: 10px;
+}
+
+#disconnect_btn:hover {
+    background-color: #1a1a2e;
+    border: 2px solid #c73e56;
+}
+
+#disconnect_btn:disabled {
+    background-color: #555555;
+    border-color: #777777;
+    color: #999999;
+}
+
+#status_text {
+    background-color: #0f3460;
+    border: 1px solid #e94560;
+    border-radius: 6px;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 12px;
+    color: #00ffaa;
+    padding: 12px;
+    line-height: 1.5;
+}
+
+#info_label {
+    font-size: 10px;
+    color: #888888;
+    margin-top: 5px;
+    padding: 8px;
+    background-color: #16213e;
+    border-radius: 6px;
+}
+
+QMessageBox {
+    background-color: #16213e;
+    color: #eeeeee;
+}
+
+QMessageBox QLabel {
+    color: #eeeeee;
+    background-color: #16213e;
+}
+
+QMessageBox QPushButton {
+    background-color: #e94560;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 20px;
+    color: white;
+    font-weight: bold;
+    min-width: 80px;
+}
+
+QMessageBox QPushButton:hover {
+    background-color: #c73e56;
+}

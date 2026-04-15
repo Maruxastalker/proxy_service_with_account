@@ -1,0 +1,112 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: proxy_postgres
+    environment:
+      POSTGRES_DB: proxy_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: proxy_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: 
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: proxy_backend
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/proxy_db
+      REDIS_URL: redis://redis:6379/0
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./backend:/app
+    command: >
+      sh -c "alembic upgrade head &&
+             uvicorn src.main:app --host 0.0.0.0 --port 8000 --reload"
+
+  celery_worker:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: proxy_celery_worker
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/proxy_db
+      REDIS_URL: redis://redis:6379/0
+    depends_on:
+      - postgres
+      - redis
+      - backend
+    volumes:
+      - ./backend:/app
+    command: celery -A src.tasks.celery_app worker --loglevel=info
+
+  celery_beat:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: proxy_celery_beat
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/proxy_db
+      REDIS_URL: redis://redis:6379/0
+    depends_on:
+      - redis
+    volumes:
+      - ./backend:/app
+    command: celery -A src.tasks.celery_app beat --loglevel=info
+
+  
+  frontend:
+    build: ./frontend-web
+    container_name: proxy_frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+  init_db:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: proxy_init
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/proxy_db
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./backend:/app
+      - ./requirements.txt:/app/requirements.txt
+    command: python init_db.py
+    restart: "no"
+
+volumes:
+  postgres_data:
+  redis_data:
